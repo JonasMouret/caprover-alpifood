@@ -2,8 +2,7 @@
   "schemaVersion": 2,
   "dockerfileLines": [
     "FROM library/python:3.6.9-alpine",
-    "RUN pip install --upgrade pip",
-    "RUN apk update && apk upgrade && apk add zlib jpeg-dev zlib-dev make g++ bash git openssh postgresql-dev curl",
+    "RUN apk update && apk upgrade && apk add make g++ bash git openssh postgresql-dev curl",
     "RUN mkdir -p /usr/src/app",
     "WORKDIR /usr/src/app",
     "COPY ./project/ /usr/src/app",
