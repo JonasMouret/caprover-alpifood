@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+    db:
+        image: postgres:11.2
+        env_file: 
+            - dev.env
+        volumes:
+            - db-data:/var/lib/postgresql/data
+        # networks:
+        #     - traefik
+        ports: 
+            - '5432:5432'
+    web:
+        build: .
+        command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+        container_name: alpifood
+        volumes:
+            - .:/alpifood
+        ports:
+            - "8000:8000"
+        # labels:
+        #     - "traefik.docker.network=traefik"
+        #     - "traefik.backend=alpifood-api"
+        #     - "traefik.frontend.rule=Host:mobo-server.ovh"
+        #     - "traefik.port=80"
+        #     - "traefik.frontend.redirect.redirectCode=301"
+        #     - "traefik.frontend.redirect.permanent=true"
+        # networks:
+        #     - traefik
+        env_file:
+            - dev.env
+        depends_on:
+            - db
+# networks:
+#     traefik:
+#         external:
+#             name: traefik_webgateway
+volumes:
+    db-data:
